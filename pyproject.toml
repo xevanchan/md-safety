@@ -1,7 +1,7 @@
 [project]
 name = "md-safety"
 version = "0.1.0"
-description = "TODO: one-line description of md-safety"
+description = "Maryland vehicle safety inspection station finder: data pipeline and static map site"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = []

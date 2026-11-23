@@ -8,7 +8,9 @@ from md_safety import __version__
 
 
 def build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="md-safety", description="TODO: describe md-safety.")
+    parser = argparse.ArgumentParser(
+        prog="md-safety", description="Maryland inspection station finder: data pipeline commands."
+    )
     parser.add_argument("--version", action="version", version=f"%(prog)s {__version__}")
     return parser
 

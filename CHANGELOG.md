@@ -7,3 +7,4 @@ Notable changes to md-safety, newest first. Format follows
 
 ### Added
 - Project skeleton: uv-managed environment, src layout, pytest, ruff, decision log.
+- Workplan for the station finder: data findings, architecture, phases (docs/workplan.md).

@@ -1,6 +1,9 @@
 # md-safety
 
-> TODO: one sentence on what md-safety does and who it is for.
+Find the closest Maryland vehicle safety inspection station: every licensed station on a
+map, sorted by distance from you. Free to use and free to run.
+
+The build plan, with what we know about the data, lives in [docs/workplan.md](docs/workplan.md).
 
 ## Quick start
 
