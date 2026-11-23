@@ -50,7 +50,7 @@ Maryland Safety Inspection System, "MSIS", built by Tyler Maryland).
   intent appears to be that the lookup is public, but `/msp/msis/` itself is not listed.
   Treat this as a courtesy signal, not a green light.
 
-### Data access stance (decision needed, Phase 0)
+### Data access stance (decided 2026-11-23: option 2, see decisions/0002)
 
 Two complementary paths. Doing both is cheap.
 
@@ -100,10 +100,10 @@ Checkboxes are the task list. Each phase ends with tests passing and a CHANGELOG
 
 ### Phase 0: decide and record (one short session)
 
-- [ ] Pick the data access stance above and send the ASED email if we go that route.
+- [x] Pick the data access stance above and send the ASED email if we go that route.
       Record it as `docs/decisions/0002-data-access.md`.
-- [ ] Record the architecture as `docs/decisions/0003-static-site-and-offline-pipeline.md`.
-- [ ] Add `web/` and `data/` to the layout tables in README.md and CLAUDE.md.
+- [x] Record the architecture as `docs/decisions/0003-static-site-and-offline-pipeline.md`.
+- [x] Add `web/` and `data/` to the layout tables in README.md and CLAUDE.md.
 - [ ] Create the public GitHub repo (needed for Pages and Actions).
 
 ### Phase 1: fetch and normalize (one or two sessions)

@@ -25,6 +25,8 @@ uv run ruff format .    # format
 | `src/md_safety/` | The package. All importable code lives here, nothing at the repo root. |
 | `tests/` | Pytest tests. Mirror the package: `src/md_safety/foo.py` is tested by `tests/test_foo.py`. |
 | `scripts/` | One-off or operational scripts that are not part of the package. |
+| `data/` | Pipeline inputs and caches: raw MSIS snapshots, geocoder cache, manual coordinate overrides. Committed on purpose. |
+| `web/` | The static site, deployed as-is by GitHub Pages. Built JSON lives in `web/data/`. |
 | `docs/` | Longer-form documentation. `docs/decisions/` holds numbered decision records. |
 | `scratch/` | Local experiments. Ignored by git, so nothing here is ever committed. |
 | `CHANGELOG.md` | User-facing changes, newest first. Add a line under *Unreleased* with each change. |

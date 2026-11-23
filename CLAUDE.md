@@ -16,6 +16,8 @@ Python project managed with uv. Source in `src/md_safety/`, tests in `tests/`.
 - Importable code: `src/md_safety/`. No Python modules at the repo root.
 - Tests: `tests/test_<module>.py`, mirroring the package layout.
 - Scripts that are not part of the package: `scripts/`.
+- Pipeline data (raw MSIS snapshots, geocode cache, overrides): `data/`. Committed. Tests never fetch live data.
+- The static site: `web/`. Plain HTML, CSS and JS with no build step. Built JSON goes to `web/data/`.
 - Documentation: `docs/`. Hard-to-reverse decisions: `docs/decisions/NNNN-short-title.md`,
   using the template in `docs/decisions/README.md`.
 - Anything a user would notice: one line under *Unreleased* in `CHANGELOG.md`.
