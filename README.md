@@ -18,6 +18,16 @@ uv run ruff check .     # lint
 uv run ruff format .    # format
 ```
 
+## Pipeline
+
+```powershell
+uv run md-safety normalize     # data/raw/latest.json -> data/normalized/stations.json
+```
+
+`uv run md-safety fetch` refreshes `data/raw/` from the state's lookup in a single request.
+It is deliberately rare, at most monthly (decision 0002); everything else runs from the
+committed snapshot, and the tests never touch the network.
+
 ## Layout
 
 | Path | What goes here |

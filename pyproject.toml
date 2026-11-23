@@ -4,7 +4,9 @@ version = "0.1.0"
 description = "Maryland vehicle safety inspection station finder: data pipeline and static map site"
 readme = "README.md"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "httpx>=0.28.1",
+]
 
 [project.scripts]
 md-safety = "md_safety.cli:main"

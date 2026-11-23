@@ -22,9 +22,9 @@ Maryland Safety Inspection System, "MSIS", built by Tyler Maryland).
   `POST https://egov.maryland.gov/msp/msis/api/Stations/PublicStationSearch`.
 - Request body: a DataTables server-side payload (`draw`, `start`, `length`, `order`,
   `columns`, `search`) merged with the page's filter object
-  `{stationName, county, city, zip, types: []}`. The UI offers page sizes of 10 and 25.
-  Whether the API honours a larger `length` (e.g. 2000) is unverified. Test it once,
-  politely; otherwise page through at 25 per request (61 requests for the full list).
+  `{stationName, county, city, zip, types: []}`. The UI offers page sizes of 10 and 25,
+  but the API honours a larger `length`: on 2026-11-23 one request with `length: 2000`
+  returned all 1,520 stations, so a refresh costs the state a single request.
 - Response: `{"data": [...], "recordsFiltered": 1520}`. One record looks like:
 
   ```json
@@ -34,11 +34,14 @@ Maryland Safety Inspection System, "MSIS", built by Tyler Maryland).
   ```
 
 - 1,520 stations today. No coordinates, so geocoding is on us.
+- First snapshot (2026-11-23): every station is in Maryland, every record has a phone
+  number, 1,519 offer e-Inspection, eight ZIPs carry a +4 suffix, and no station number
+  repeats.
 - Vehicle classes (from the page's "What is this?" modal and its lookups module):
   A passenger vehicles and light trucks, B any trailer, C heavy trucks and buses,
   M motorcycles, TL light trailers, R motor homes, F (undocumented), plus the display-only
-  label "A/M Trailer". Records use the letter `T`, which is probably `TL`. Confirm before
-  mapping it.
+  label "A/M Trailer". Records never use `TL`; 1,459 of 1,520 stations carry `T`, so `T`
+  is the trailer class in the data and the site should label it "Trailer".
 - Data hygiene needed: names and addresses are mixed UPPERCASE and Title Case; phone
   formats vary (`(301)6957666`, `(410) 363-3333`, `410-968-0606`); `types` is a comma
   string, not a list.
@@ -104,24 +107,24 @@ Checkboxes are the task list. Each phase ends with tests passing and a CHANGELOG
       Record it as `docs/decisions/0002-data-access.md`.
 - [x] Record the architecture as `docs/decisions/0003-static-site-and-offline-pipeline.md`.
 - [x] Add `web/` and `data/` to the layout tables in README.md and CLAUDE.md.
-- [ ] Create the public GitHub repo (needed for Pages and Actions).
+- [x] Create the public GitHub repo (needed for Pages and Actions).
 
 ### Phase 1: fetch and normalize (one or two sessions)
 
-- [ ] `uv add httpx`. Write `src/md_safety/fetch.py`: builds the DataTables payload,
+- [x] `uv add httpx`. Write `src/md_safety/fetch.py`: builds the DataTables payload,
       pages through results, one-second pause, retries with backoff, project User-Agent,
       writes `data/raw/latest.json` plus a dated copy. Run it once by hand and check
       whether a large `length` returns everything in one call.
-- [ ] Write `src/md_safety/models.py`: a `Station` dataclass with `id` (station number),
+- [x] Write `src/md_safety/models.py`: a `Station` dataclass with `id` (station number),
       `name`, `address`, `city`, `zip`, `phone`, `classes: list[str]`, `e_inspection: bool`,
       later `lat`, `lon`, `geocode_source`.
-- [ ] Write `src/md_safety/normalize.py`: title-case names and streets (keep the raw
+- [x] Write `src/md_safety/normalize.py`: title-case names and streets (keep the raw
       values too), phone digits to `(xxx) xxx-xxxx`, split `types` into classes, map
       `T` to `TL` once confirmed, drop duplicates by station number.
-- [ ] Save the ten records captured today as `tests/fixtures/public_station_search_page1.json`
+- [x] Save the ten records captured today as `tests/fixtures/public_station_search_page1.json`
       and test normalize against them. Test the payload builder and paging logic with a
       fake transport, never against the live site.
-- [ ] CLI: `md-safety fetch` and `md-safety normalize` subcommands in `cli.py`.
+- [x] CLI: `md-safety fetch` and `md-safety normalize` subcommands in `cli.py`.
 
 ### Phase 2: geocode and build (one or two sessions)
 

@@ -1,0 +1,15 @@
+{
+ "data": [
+  {"stationNumber": 2, "tradingName": "PEP BOYS #65", "address": "1120 WEST PATRICK STREET", "city": "FREDERICK", "state": "Maryland", "zipCode": "21703", "phone": "(301)6957666", "types": "A, A/M Trailer, T", "eInspections": true},
+  {"stationNumber": 14, "tradingName": "Koons Volvo Cars White Marsh", "address": "5395 Nottingham Drive", "city": "White Marsh", "state": "Maryland", "zipCode": "21162", "phone": "(410) 363-3333", "types": "A, A/M Trailer, T", "eInspections": true},
+  {"stationNumber": 17, "tradingName": "WALT EGER'S SERVICE CENTER INC.", "address": "1450 GRIMM ROAD", "city": "SEVERN", "state": "Maryland", "zipCode": "21144", "phone": "(410)5198445", "types": "A, A/M Trailer, T", "eInspections": true},
+  {"stationNumber": 26, "tradingName": "TAWES BROTHERS, INC.", "address": "4090 CRISFIELD HIGHWAY", "city": "CRISFIELD", "state": "Maryland", "zipCode": "21817", "phone": "410-968-0606", "types": "A, T, A/M Trailer", "eInspections": true},
+  {"stationNumber": 54, "tradingName": "TOLKER AUTO SERVICE", "address": "427-A EAST DIAMOND AVENUE", "city": "GAITHERSBURG", "state": "Maryland", "zipCode": "20877", "phone": "(301)8699360", "types": "A, A/M Trailer, T", "eInspections": true},
+  {"stationNumber": 71, "tradingName": "HAMILTON NISSAN, INC.", "address": "1929 DUAL HIGHWAY", "city": "HAGERSTOWN", "state": "Maryland", "zipCode": "21740", "phone": "(301)7337222", "types": "A, A/M Trailer, T", "eInspections": true},
+  {"stationNumber": 87, "tradingName": "APPLE FORD, INC.", "address": "8800 STANFORD BOULEVARD", "city": "COLUMBIA", "state": "Maryland", "zipCode": "21045", "phone": "(410) 290-1100", "types": "A, A/M Trailer, T", "eInspections": true},
+  {"stationNumber": 146, "tradingName": "INTERNATIONAL AUTO REPAIR INC.", "address": "1801 GWYNN OAK AVENUE", "city": "WOODLAWN", "state": "Maryland", "zipCode": "21207", "phone": "(410)9446850", "types": "A, A/M Trailer, T", "eInspections": true},
+  {"stationNumber": 147, "tradingName": "QUEEN CITY MOTORS", "address": "75 HENDERSON AVENUE", "city": "CUMBERLAND", "state": "Maryland", "zipCode": "21502", "phone": "(301)7770888", "types": "A, A/M Trailer, T", "eInspections": true},
+  {"stationNumber": 152, "tradingName": "DARCARS NISSAN OF COLLEGE PARK", "address": "9330 BALTIMORE AVENUE", "city": "COLLEGE PARK", "state": "Maryland", "zipCode": "20740", "phone": "(301)4418000", "types": "A, A/M Trailer, T", "eInspections": true}
+ ],
+ "recordsFiltered": 1520
+}
