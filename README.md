@@ -22,11 +22,15 @@ uv run ruff format .    # format
 
 ```powershell
 uv run md-safety normalize     # data/raw/latest.json -> data/normalized/stations.json
+uv run md-safety geocode       # add coordinates (Census geocoder, cached) -> data/geocoded/
+uv run md-safety build         # sanity checks, then web/data/stations.json for the site
 ```
 
 `uv run md-safety fetch` refreshes `data/raw/` from the state's lookup in a single request.
 It is deliberately rare, at most monthly (decision 0002); everything else runs from the
-committed snapshot, and the tests never touch the network.
+committed snapshot, and the tests never touch the network. `geocode` only calls the Census
+Bureau for addresses missing from `data/geocoded/cache.csv`; add `--offline` to skip the
+network entirely.
 
 ## Layout
 

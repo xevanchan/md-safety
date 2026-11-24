@@ -68,11 +68,13 @@ def build_payload(start: int, length: int, draw: int = 1) -> dict[str, Any]:
     }
 
 
-def new_client(transport: httpx.BaseTransport | None = None) -> httpx.Client:
+def new_client(
+    transport: httpx.BaseTransport | None = None, timeout: float = TIMEOUT_SECONDS
+) -> httpx.Client:
     """An HTTP client that identifies this project. ``transport`` lets tests fake the server."""
     return httpx.Client(
-        headers={"User-Agent": USER_AGENT, "Accept": "application/json"},
-        timeout=TIMEOUT_SECONDS,
+        headers={"User-Agent": USER_AGENT},
+        timeout=timeout,
         transport=transport,
     )
 
@@ -148,8 +150,9 @@ def save_snapshot(records: list[dict], data_dir: Path, fetched_at: datetime | No
     text = json.dumps(envelope, indent=1, ensure_ascii=False) + "\n"
     dated = raw_dir / f"stations-{fetched_at:%Y-%m-%d}.json"
     latest = raw_dir / "latest.json"
-    dated.write_text(text, encoding="utf-8")
-    latest.write_text(text, encoding="utf-8")
+    for path in (dated, latest):
+        with path.open("w", encoding="utf-8", newline="\n") as handle:
+            handle.write(text)
     return latest
 
 

@@ -121,3 +121,4 @@ def test_write_and_read_stations_roundtrip(tmp_path):
     path = tmp_path / "out" / "stations.json"
     write_stations(stations, path)
     assert read_stations(path) == stations
+    assert b"\r\n" not in path.read_bytes()

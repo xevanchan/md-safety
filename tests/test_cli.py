@@ -18,6 +18,8 @@ def test_no_command_prints_help(capsys):
     assert "md-safety" in out
     assert "fetch" in out
     assert "normalize" in out
+    assert "geocode" in out
+    assert "build" in out
 
 
 def test_normalize_command_writes_clean_stations(tmp_path, capsys):
@@ -35,6 +37,40 @@ def test_normalize_command_without_snapshot_fails(tmp_path):
     missing = tmp_path / "nope.json"
     output = tmp_path / "out.json"
     assert cli.main(["normalize", "--input", str(missing), "--output", str(output)]) == 1
+
+
+def test_geocode_offline_and_build_commands(tmp_path, capsys):
+    records = json.loads(FIXTURE.read_text(encoding="utf-8"))["data"]
+    latest = save_snapshot(records, tmp_path / "data")
+    normalized = tmp_path / "data" / "normalized" / "stations.json"
+    assert cli.main(["normalize", "--input", str(latest), "--output", str(normalized)]) == 0
+
+    overrides = tmp_path / "overrides.csv"
+    overrides.write_text("id,lat,lon,note\n2,39.41,-77.43,by hand\n", encoding="utf-8")
+    geocoded = tmp_path / "data" / "geocoded" / "stations.json"
+    cache = tmp_path / "data" / "geocoded" / "cache.csv"
+    geocode_args = ["geocode", "--offline", "--input", str(normalized), "--output", str(geocoded)]
+    geocode_args += ["--cache", str(cache), "--overrides", str(overrides)]
+    geocode_args += ["--zips", str(tmp_path / "no_zips.csv")]  # no ZIP fallback in this test
+    assert cli.main(geocode_args) == 0
+    assert "wrote 10 stations (1 with coordinates)" in capsys.readouterr().out
+
+    site = tmp_path / "web" / "data" / "stations.json"
+    build_args = [
+        "build",
+        "--input",
+        str(geocoded),
+        "--snapshot",
+        str(latest),
+        "--output",
+        str(site),
+    ]
+    assert cli.main(build_args) == 1  # nine of ten stations have no coordinates
+    assert cli.main([*build_args, "--force"]) == 0
+    payload = json.loads(site.read_text(encoding="utf-8"))
+    assert (payload["count"], payload["located"]) == (10, 1)
+    assert payload["stations"][0]["lat"] == 39.41
+    assert payload["fetched_at"] is not None
 
 
 def test_fetch_command_reports_failure(monkeypatch, tmp_path):

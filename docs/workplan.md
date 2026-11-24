@@ -89,7 +89,7 @@ MSIS API ──fetch──▶ data/raw/latest.json ──normalize──▶ clea
 | Need | Choice | Why | Caveats |
 | --- | --- | --- | --- |
 | Geocode 1,520 addresses | US Census Geocoder, batch endpoint | Free, no key, up to 10,000 addresses per CSV, official US address data | Expect a few percent unmatched; keep a fallback and a manual overrides file |
-| Geocode fallback | Nominatim (OpenStreetMap) | Free | One request per second, descriptive User-Agent, attribution. Fine for a few dozen misses |
+| Geocode fallback | Centre of the station's ZIP code (Census ZCTA gazetteer, bundled) | Offline, no second service to depend on | Approximate; the site flags it |
 | Map | MapLibre GL JS with OpenFreeMap tiles | No key, no advertised caps, native point clustering | Verify current OpenFreeMap terms. Leaflet plus OSM raster tiles is the simplest fallback, but OSM's tile policy is for light use only |
 | Visitor location | Browser Geolocation API | Free, precise | Needs HTTPS and permission; always offer a typed fallback |
 | Typed fallback | Bundled Maryland ZIP centroid table (Census ZCTA gazetteer, about 470 rows) | Works offline, instant, no API | Centroid accuracy is enough for sorting, not for walking |
@@ -126,20 +126,26 @@ Checkboxes are the task list. Each phase ends with tests passing and a CHANGELOG
       fake transport, never against the live site.
 - [x] CLI: `md-safety fetch` and `md-safety normalize` subcommands in `cli.py`.
 
-### Phase 2: geocode and build (one or two sessions)
+### Phase 2: geocode and build (done 2026-11-24)
 
-- [ ] Write `src/md_safety/geocode.py`: write the Census batch CSV (id, street, city,
-      state, zip), POST it to the `locations/addressbatch` endpoint with the current
-      public benchmark, parse the result rows (match status, matched address, longitude,
-      latitude). Cache results in `data/geocoded/census.csv` keyed by normalized address so
-      re-runs only geocode new or changed stations.
-- [ ] Fallback chain for `No_Match` and `Tie`: Nominatim at one request per second, then
-      `data/overrides.csv` for hand-fixed coordinates.
-- [ ] Quality gates: every point inside Maryland's bounding box, unmatched below two
-      percent, station count within ten percent of the previous build. Fail loudly otherwise.
-- [ ] `md-safety build` writes `web/data/stations.json` (and `stations.geojson`) with
-      `generated_at`, `source_url`, `count`, and the per-station fields the site needs.
-- [ ] CHANGELOG and README updated with how to run the pipeline end to end.
+Kept deliberately small: one geocoder, one output file, two plain checks.
+
+- [x] `src/md_safety/geocode.py`: one Census batch request (id, street, city, state, zip),
+      results cached in `data/geocoded/cache.csv` by address so a refresh only geocodes new
+      addresses. First run: 1,432 of 1,520 matched, in six seconds.
+- [x] Misses fall back to the centre of their ZIP code from `data/md_zips.csv` (477 Maryland
+      ZCTAs from the Census gazetteer) and are marked approximate. `data/overrides.csv` wins
+      over everything for hand-fixed coordinates. No second geocoding service.
+- [x] Two checks in `md-safety build`: fewer than two percent of stations without
+      coordinates, and a station count within ten percent of the previous build. Points
+      outside Maryland count as misses.
+- [x] `md-safety build` writes `web/data/stations.json` only (no GeoJSON) with
+      `generated_at`, `fetched_at`, `source_url`, counts, and the per-station fields the site
+      needs, including an `approx` flag.
+- [x] README, data/README and CHANGELOG describe the full pipeline.
+
+Open: station 1760 (Cavetown, ZIP 21720) has no Census match and its ZIP has no ZCTA, so
+it needs a row in `data/overrides.csv`.
 
 ### Phase 3: the website (two or three sessions)
 

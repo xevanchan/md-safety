@@ -29,6 +29,7 @@ Python project managed with uv. Source in `src/md_safety/`, tests in `tests/`.
 - Python 3.12+ syntax. Type hints on public functions.
 - Ruff owns lint and format; its config is in `pyproject.toml`. Do not hand-format around it.
 - Small, focused modules. Prefer a new module over a very long file.
+- Keep it simple. One way to do each thing; leave a feature out rather than add a fallback path.
 - Tests are plain pytest functions and fixtures, not unittest classes.
 
 ## Git

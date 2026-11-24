@@ -125,7 +125,8 @@ def test_save_snapshot_writes_latest_and_dated_copy(tmp_path):
     latest = save_snapshot(records, tmp_path, fetched_at=when)
     assert latest == tmp_path / "raw" / "latest.json"
     dated = tmp_path / "raw" / "stations-2026-11-23.json"
-    assert dated.read_text(encoding="utf-8") == latest.read_text(encoding="utf-8")
+    assert dated.read_bytes() == latest.read_bytes()
+    assert b"\r\n" not in latest.read_bytes()  # LF even on Windows, so git never rewrites it
     snapshot = load_snapshot(latest)
     assert snapshot["count"] == 3
     assert snapshot["fetched_at"] == "2026-11-23T15:00:00+00:00"

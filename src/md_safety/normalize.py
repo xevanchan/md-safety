@@ -161,7 +161,8 @@ def normalize_all(records: Iterable[dict]) -> list[Station]:
 def write_stations(stations: Iterable[Station], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     payload = [station.to_dict() for station in stations]
-    path.write_text(json.dumps(payload, indent=1, ensure_ascii=False) + "\n", encoding="utf-8")
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(payload, indent=1, ensure_ascii=False) + "\n")
 
 
 def read_stations(path: Path) -> list[Station]:
