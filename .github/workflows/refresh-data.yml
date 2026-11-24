@@ -1,0 +1,49 @@
+name: Refresh station data
+
+# Once a month: pull the station list (one request to the MSIS lookup, decision 0002),
+# geocode anything new, rebuild the site's JSON, commit if it changed, redeploy.
+# If the build's sanity checks trip, this run fails and the live site is left alone.
+on:
+  schedule:
+    - cron: "0 10 1 * *" # 10:00 UTC on the first of each month
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    outputs:
+      changed: ${{ steps.commit.outputs.changed }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync
+      - name: Run the pipeline
+        run: |
+          uv run md-safety fetch
+          uv run md-safety normalize
+          uv run md-safety geocode
+          uv run md-safety build
+      - name: Commit refreshed data
+        id: commit
+        run: |
+          if [ -z "$(git status --porcelain -- data web/data)" ]; then
+            echo "No change in station data."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data web/data
+          git commit -m "Refresh station data ($(date -u +%Y-%m-%d))"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+  deploy:
+    needs: refresh
+    if: needs.refresh.outputs.changed == 'true'
+    uses: ./.github/workflows/pages.yml

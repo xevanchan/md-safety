@@ -3,6 +3,8 @@
 Find the closest Maryland vehicle safety inspection station: every licensed station on a
 map, sorted by distance from you. Free to use and free to run.
 
+Live at https://xevanchan.github.io/md-safety/.
+
 The build plan, with what we know about the data, lives in [docs/workplan.md](docs/workplan.md).
 
 ## Quick start
@@ -42,6 +44,19 @@ uv run python -m http.server 8000 -d web
 ```
 
 then open http://localhost:8000. Map tiles come from OpenFreeMap, so it needs internet.
+
+## Automation
+
+Three GitHub Actions workflows in `.github/workflows/`:
+
+| Workflow | When | What |
+| --- | --- | --- |
+| `ci.yml` | every push to `main` and every pull request | `ruff check`, `ruff format --check`, `pytest` |
+| `pages.yml` | every push to `main` | publishes `web/` to GitHub Pages |
+| `refresh-data.yml` | 10:00 UTC on the first of each month, or by hand | fetch, normalize, geocode, build; commits `data/` and `web/data/` if anything changed, then redeploys |
+
+A failed refresh, for example the build's sanity checks tripping, leaves the live site
+untouched and shows up as a failed run on GitHub.
 
 ## Layout
 

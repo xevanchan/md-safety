@@ -172,14 +172,19 @@ Three files in `web/`, no build step, MapLibre GL JS with OpenFreeMap tiles.
       selection, class filter.
 - [ ] Manual test on a real phone over cellular.
 
-### Phase 4: deploy and automate (one session)
+### Phase 4: deploy and automate (done 2026-11-24)
 
-- [ ] GitHub Pages serving `web/` from `main`.
-- [ ] `.github/workflows/ci.yml`: ruff and pytest on every push and pull request.
-- [ ] `.github/workflows/refresh-data.yml`: monthly cron, runs `uv run md-safety build`,
-      commits `web/data/` only if it changed, which redeploys Pages.
-- [ ] Privacy note on the site: location is used in the browser only; no analytics.
-- [ ] Optional custom domain.
+- [x] GitHub Pages serves `web/` through `.github/workflows/pages.yml` on every push to
+      `main`, with the Pages source set to "GitHub Actions". Live at
+      https://xevanchan.github.io/md-safety/.
+- [x] `.github/workflows/ci.yml`: ruff and pytest on every push to `main` and every pull
+      request.
+- [x] `.github/workflows/refresh-data.yml`: first of the month at 10:00 UTC, runs fetch,
+      normalize, geocode and build, commits `data/` and `web/data/` if anything changed,
+      then calls the Pages workflow. A failed sanity check fails the run and leaves the
+      site as it was.
+- [x] Privacy note on the site: location is used in the browser only; no analytics.
+- [ ] Optional custom domain. Not needed for now.
 
 ### Phase 5: stretch (only after people use it)
 
