@@ -30,3 +30,6 @@ desktop.ini
 
 # Local experiments, never committed
 scratch/
+
+# Claude desktop app preview config
+.claude/

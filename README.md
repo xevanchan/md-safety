@@ -32,6 +32,17 @@ committed snapshot, and the tests never touch the network. `geocode` only calls 
 Bureau for addresses missing from `data/geocoded/cache.csv`; add `--offline` to skip the
 network entirely.
 
+## Site
+
+The site is `web/`: one HTML file, one stylesheet, one script, and the JSON that `build`
+writes into `web/data/`. There is no build step. To try it locally:
+
+```powershell
+uv run python -m http.server 8000 -d web
+```
+
+then open http://localhost:8000. Map tiles come from OpenFreeMap, so it needs internet.
+
 ## Layout
 
 | Path | What goes here |

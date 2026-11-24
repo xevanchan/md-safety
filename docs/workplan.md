@@ -147,25 +147,29 @@ Kept deliberately small: one geocoder, one output file, two plain checks.
 Open: station 1760 (Cavetown, ZIP 21720) has no Census match and its ZIP has no ZCTA, so
 it needs a row in `data/overrides.csv`.
 
-### Phase 3: the website (two or three sessions)
+### Phase 3: the website (built 2026-11-24)
 
-- [ ] `web/index.html`, `web/app.js`, `web/styles.css`. Mobile-first: people use this
-      standing in a parking lot.
-- [ ] Map of all stations with clustering; click a pin to highlight the list entry and
-      vice versa.
-- [ ] "Use my location" button: geolocation, haversine distance in miles, list sorted
-      nearest first, show the top 25 with a "show more" control.
-- [ ] Typed fallback: ZIP box backed by the bundled centroid table; optional full-address
-      search via Nominatim, triggered only by the visitor pressing Search.
-- [ ] Filters: vehicle class (default A, which is cars and light trucks), e-Inspection
-      only, name search.
-- [ ] Each result: name, address, tap-to-call phone, classes, e-Inspection badge, distance,
-      directions link.
-- [ ] Footer: "Data from Maryland State Police MSIS, last updated <date>. Licences change;
-      confirm with the station or the official lookup." Link to the official page and to
-      the map attribution.
-- [ ] Accessibility pass: keyboard navigation of the list, visible focus, colour contrast,
-      labels on inputs.
+Three files in `web/`, no build step, MapLibre GL JS with OpenFreeMap tiles.
+
+- [x] `web/index.html`, `web/app.js`, `web/styles.css`. Mobile-first: map on top, list
+      below; side by side on wide screens.
+- [x] Every located station is a dot on the map; 1,500 circles render fine without
+      clustering. Click a dot to highlight and scroll to its list entry; click a list entry
+      to fly to its dot and open a popup.
+- [x] "Use my location": geolocation, straight-line miles, nearest first, 25 at a time with
+      "Show 25 more".
+- [x] Typed fallback: ZIP box backed by `web/data/zips.json` (477 Maryland ZIP centres).
+      No address search; a ZIP is enough to sort by distance.
+- [x] One filter, vehicle class, default A. e-Inspection and name search were dropped:
+      1,519 of 1,520 stations offer e-Inspection, so that filter would do nothing.
+- [x] Each result: name, distance, address, tap-to-call phone, classes, a directions link
+      (Google Maps URL, no key) and an "approximate location" note for ZIP-centre stations.
+- [x] Footer: data source and fetch date, licence disclaimer, privacy note, map
+      attribution, source link.
+- [x] Keyboard: list entries are focusable and respond to Enter and Space; visible focus
+      rings; labelled inputs.
+- [x] Checked in the desktop app's browser at desktop and phone sizes: load, ZIP search,
+      selection, class filter.
 - [ ] Manual test on a real phone over cellular.
 
 ### Phase 4: deploy and automate (one session)

@@ -32,6 +32,8 @@ def fixture_records() -> list[dict]:
         ("Koons Volvo Cars White Marsh", "Koons Volvo Cars White Marsh"),
         ("427-A EAST DIAMOND AVENUE", "427-A East Diamond Avenue"),
         ("O'BRIEN AUTO LLC", "O'Brien Auto LLC"),
+        ("DOWNTOWN BP", "Downtown BP"),
+        ("JONES MOTORS DBA JBA CHEVROLET", "Jones Motors DBA JBA Chevrolet"),
         ("MCCARTHY TIRE (ANNAPOLIS)", "McCarthy Tire (Annapolis)"),
         ("1234 N CHARLES ST", "1234 N Charles St"),
         ("PO BOX 12", "PO Box 12"),

@@ -20,8 +20,8 @@ log = logging.getLogger(__name__)
 # Tokens that stay uppercase when an all-caps string is re-cased.
 KEEP_UPPER = frozenset(
     {
-        "LLC", "USA", "US", "DC", "MD", "PO", "II", "III", "IV",
-        "BMW", "GMC", "VW", "RV", "CDJR", "AAA", "MVA",
+        "LLC", "DBA", "USA", "US", "DC", "MD", "PO", "II", "III", "IV",
+        "BMW", "GMC", "VW", "RV", "CDJR", "AAA", "MVA", "BP", "JBA", "IG",
         "N", "S", "E", "W", "NE", "NW", "SE", "SW",
     }
 )  # fmt: skip

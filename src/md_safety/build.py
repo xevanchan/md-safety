@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import csv
 import json
 import logging
 from datetime import UTC, datetime
@@ -70,3 +71,15 @@ def write_payload(payload: dict, path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("w", encoding="utf-8", newline="\n") as handle:
         handle.write(json.dumps(payload, indent=1, ensure_ascii=False) + "\n")
+
+
+def write_zips(zips_csv: Path, path: Path) -> int:
+    """``web/data/zips.json``: ZIP code to ``[lat, lon]``, for the site's ZIP search."""
+    with zips_csv.open(encoding="utf-8", newline="") as handle:
+        zips = {
+            row["zip"]: [float(row["lat"]), float(row["lon"])] for row in csv.DictReader(handle)
+        }
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8", newline="\n") as handle:
+        handle.write(json.dumps(zips, separators=(",", ":")) + "\n")
+    return len(zips)

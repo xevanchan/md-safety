@@ -8,7 +8,14 @@ from contextlib import nullcontext
 from pathlib import Path
 
 from md_safety import __version__
-from md_safety.build import BuildError, build_payload, check, previous_count, write_payload
+from md_safety.build import (
+    BuildError,
+    build_payload,
+    check,
+    previous_count,
+    write_payload,
+    write_zips,
+)
 from md_safety.fetch import (
     DEFAULT_DELAY_SECONDS,
     DEFAULT_PAGE_SIZE,
@@ -73,6 +80,12 @@ def build_parser() -> argparse.ArgumentParser:
     build.add_argument("--snapshot", type=Path, default=Path("data/raw/latest.json"))
     build.add_argument("--output", type=Path, default=Path("web/data/stations.json"))
     build.add_argument("--force", action="store_true", help="write even if the checks fail")
+    build.add_argument(
+        "--zips",
+        type=Path,
+        default=Path("data/md_zips.csv"),
+        help="ZIP centres to publish as zips.json for the site's ZIP search",
+    )
     return parser
 
 
@@ -145,5 +158,8 @@ def _build(args: argparse.Namespace) -> int:
         log.warning("building anyway: %s", exc)
     payload = build_payload(stations, fetched_at=fetched_at)
     write_payload(payload, args.output)
+    if args.zips.exists():
+        zips_out = args.output.with_name("zips.json")
+        log.info("wrote %d ZIP centres to %s", write_zips(args.zips, zips_out), zips_out)
     print(f"wrote {payload['count']} stations ({payload['located']} located) to {args.output}")
     return 0

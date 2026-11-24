@@ -55,22 +55,19 @@ def test_geocode_offline_and_build_commands(tmp_path, capsys):
     assert cli.main(geocode_args) == 0
     assert "wrote 10 stations (1 with coordinates)" in capsys.readouterr().out
 
+    zips_csv = tmp_path / "md_zips.csv"
+    zips_csv.write_text("zip,lat,lon\n21703,39.39,-77.46\n", encoding="utf-8")
     site = tmp_path / "web" / "data" / "stations.json"
-    build_args = [
-        "build",
-        "--input",
-        str(geocoded),
-        "--snapshot",
-        str(latest),
-        "--output",
-        str(site),
-    ]
+    build_args = ["build", "--input", str(geocoded), "--snapshot", str(latest)]
+    build_args += ["--output", str(site), "--zips", str(zips_csv)]
     assert cli.main(build_args) == 1  # nine of ten stations have no coordinates
     assert cli.main([*build_args, "--force"]) == 0
     payload = json.loads(site.read_text(encoding="utf-8"))
     assert (payload["count"], payload["located"]) == (10, 1)
     assert payload["stations"][0]["lat"] == 39.41
     assert payload["fetched_at"] is not None
+    zips_json = json.loads((site.parent / "zips.json").read_text(encoding="utf-8"))
+    assert zips_json == {"21703": [39.39, -77.46]}
 
 
 def test_fetch_command_reports_failure(monkeypatch, tmp_path):

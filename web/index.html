@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Maryland inspection stations near you</title>
+  <meta name="description" content="Every licensed Maryland vehicle safety inspection station on a map, sorted by distance from you.">
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Maryland inspection stations</h1>
+    <p class="tagline">Find the closest licensed vehicle safety inspection station.</p>
+    <form id="controls" class="controls" autocomplete="off">
+      <button type="button" id="locate" class="primary">Use my location</button>
+      <label class="zip">or ZIP
+        <input id="zip" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" placeholder="21201" aria-label="Maryland ZIP code">
+      </label>
+      <button type="submit" class="secondary">Go</button>
+      <label class="vehicle">Vehicle
+        <select id="class">
+          <option value="A" selected>Car, SUV, light truck (A)</option>
+          <option value="M">Motorcycle (M)</option>
+          <option value="T">Trailer (T)</option>
+          <option value="C">Heavy truck or bus (C)</option>
+          <option value="R">Motor home (R)</option>
+          <option value="B">Trailer with air brakes (B)</option>
+          <option value="">Any</option>
+        </select>
+      </label>
+    </form>
+    <p id="status" class="status" role="status">Loading stations…</p>
+  </header>
+
+  <main>
+    <div id="map" aria-label="Map of inspection stations"></div>
+    <section id="results" aria-label="Stations sorted by distance">
+      <ol id="list" class="list"></ol>
+      <button type="button" id="more" class="secondary" hidden>Show 25 more</button>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      Station data: Maryland State Police
+      <a href="https://egov.maryland.gov/msp/msis/lookup/stations">Maryland Safety Inspection System</a>,
+      fetched <span id="fetched">…</span>. Licences change, so confirm with the station before you go.
+      Stations marked approximate are placed at the centre of their ZIP code.
+    </p>
+    <p>
+      Your location stays in your browser. Distances are straight-line.
+      Map © <a href="https://openfreemap.org">OpenFreeMap</a>
+      © <a href="https://www.openmaptiles.org/">OpenMapTiles</a>,
+      data from <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors.
+      <a href="https://github.com/xevanchan/md-safety">Source code</a>.
+    </p>
+  </footer>
+
+  <script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

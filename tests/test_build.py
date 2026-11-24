@@ -11,6 +11,7 @@ from md_safety.build import (
     previous_count,
     site_record,
     write_payload,
+    write_zips,
 )
 from md_safety.models import Station
 
@@ -87,3 +88,17 @@ def test_build_and_write_payload(tmp_path):
     assert previous_count(out) == 2
     assert b"\r\n" not in out.read_bytes()
     assert json.loads(out.read_text(encoding="utf-8"))["stations"][0]["name"] == "Station 1"
+
+
+def test_write_zips(tmp_path):
+    source = tmp_path / "md_zips.csv"
+    source.write_text(
+        "zip,lat,lon\n21703,39.391234,-77.461234\n20601,38.62,-76.86\n", encoding="utf-8"
+    )
+    out = tmp_path / "web" / "data" / "zips.json"
+    assert write_zips(source, out) == 2
+    assert json.loads(out.read_text(encoding="utf-8")) == {
+        "21703": [39.391234, -77.461234],
+        "20601": [38.62, -76.86],
+    }
+    assert b"\r\n" not in out.read_bytes()
