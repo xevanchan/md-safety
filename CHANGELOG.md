@@ -13,3 +13,6 @@ Notable changes to md-safety, newest first. Format follows
 - Geocoding and build: `md-safety geocode` (Census batch geocoder with a cache, ZIP-centre fallback, overrides) and `md-safety build` (two sanity checks, then `web/data/stations.json`). 1,519 of 1,520 stations located.
 - Website: `web/` static page with a map of every station, "use my location" and ZIP search sorted by distance, a vehicle class filter, and phone and directions links.
 - Deployment: GitHub Pages at https://xevanchan.github.io/md-safety/, a CI workflow (ruff, pytest) and a monthly data-refresh workflow that redeploys when the data changes.
+
+### Changed
+- When the browser denies location access, the message now says how to allow it again.

@@ -189,11 +189,10 @@
       (pos) =>
         setOrigin({ lat: pos.coords.latitude, lon: pos.coords.longitude, label: "your location" }),
       (err) => {
-        const why =
+        status.textContent =
           err.code === err.PERMISSION_DENIED
-            ? "Location access was denied."
-            : "Couldn't get your location.";
-        status.textContent = `${why} Enter a ZIP code instead.`;
+            ? 'Location access was denied. To allow it, tap the lock or "aA" icon by the address bar and turn Location on, then try again. Or enter a ZIP code instead.'
+            : "Couldn't get your location. Enter a ZIP code instead.";
       },
       { timeout: 10000, maximumAge: 300000 }
     );
